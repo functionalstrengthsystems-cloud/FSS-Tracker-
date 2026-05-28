@@ -1,1 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>FSS Tracker — Functional Strength Systems</title>
+<link rel="icon" type="image/png" href="public/logo-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<!-- LOADING -->
+<div id="loadingScreen">
+  <div class="load-inner">
+    <div class="load-logo">
+      <div class="load-circle">
+        <span class="load-fss">FSS</span>
+        <svg class="load-barbell" viewBox="0 0 120 24" fill="none">
+          <rect x="0" y="8" width="8" height="8" fill="#8DC63F" rx="1"/>
+          <rect x="10" y="6" width="8" height="12" fill="#8DC63F" rx="1"/>
+          <rect x="20" y="10" width="80" height="4" fill="#fff" rx="2"/>
+          <rect x="102" y="6" width="8" height="12" fill="#8DC63F" rx="1"/>
+          <rect x="112" y="8" width="8" height="8" fill="#8DC63F" rx="1"/>
+        </svg>
+      </div>
+    </div>
+    <div class="load-name">Functional Strength Systems</div>
+    <div class="load-spin"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <div class="hlogo">
+        <div class="hlogo-circle">
+          <span class="hlogo-text">FSS</span>
+          <svg viewBox="0 0 60 12" width="36" height="7">
+            <rect x="0" y="3" width="4" height="6" fill="#8DC63F" rx=".5"/>
+            <rect x="5" y="2" width="4" height="8" fill="#8DC63F" rx=".5"/>
+            <rect x="10" y="4" width="40" height="4" fill="#fff" rx="1"/>
+            <rect x="51" y="2" width="4" height="8" fill="#8DC63F" rx=".5"/>
+            <rect x="56" y="3" width="4" height="6" fill="#8DC63F" rx=".5"/>
+          </svg>
+        </div>
+        <div class="hlogo-name">
+          <span class="hlogo-full">Functional Strength Systems</span>
+          <span class="hlogo-short">FSS Tracker</span>
+        </div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="month-badge" id="curMonth"></div>
+      <div class="sync-dot" id="syncDot" title="Syncing..."></div>
+    </div>
+  </header>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <button class="nav-btn active" data-screen="dashboard" onclick="showScreen('dashboard',this)">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 6a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zm10 0a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-btn" data-screen="clients" onclick="showScreen('clients',this)">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zm8 0a3 3 0 11-6 0 3 3 0 016 0zM5 16a4 4 0 018 0H5zm8.93-4a4.002 4.002 0 013.07 4h-3a4.002 4.002 0 00-3.07-4h3z"/></svg>
+      Clients
+    </button>
+    <button class="nav-btn" data-screen="report" onclick="showScreen('report',this)">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
+      Reports
+    </button>
+    <button class="nav-btn" data-screen="add" onclick="showScreen('add',this)">
+      <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+      New Client
+    </button>
+  </nav>
+
+  <!-- SCREENS -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="screen active" id="screen-dashboard">
+      <div class="sec-label">Overview</div>
+      <div class="summary-strip" id="sumStrip"></div>
+      <div class="sec-label">Action needed</div>
+      <div id="alertList"></div>
+      <div class="sec-label">All clients</div>
+      <div class="client-grid" id="dashGrid"></div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div class="screen" id="screen-clients">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div class="sec-label" style="margin:0;">Client tracker</div>
+        <input class="search-input" id="clientSearch" placeholder="Search clients..." oninput="filterClients()">
+      </div>
+      <div class="client-grid" id="clientGrid"></div>
+    </div>
+
+    <!-- REPORT -->
+    <div class="screen" id="screen-report">
+      <div class="sec-label">End-of-block report</div>
+      <div class="rep-selector" id="repSelector"></div>
+      <div id="repOutput"><div class="empty-state">Select a client above to generate their progress report and invoice message.</div></div>
+    </div>
+
+    <!-- ADD CLIENT -->
+    <div class="screen" id="screen-add">
+      <div class="add-card">
+        <div class="add-title">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20" style="color:var(--green)"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+          Add new client
+        </div>
+        <div class="form-grid">
+          <div class="field"><div class="fl">Name</div><input class="fi" id="nName" placeholder="Client name"></div>
+          <div class="field"><div class="fl">Sessions / week</div>
+            <select class="fi" id="nFreq">
+              <option value="1">1× per week</option>
+              <option value="2" selected>2× per week</option>
+              <option value="3">3× per week</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Package size</div>
+            <select class="fi" id="nPkg">
+              <option value="8">8 sessions</option>
+              <option value="10" selected>10 sessions</option>
+              <option value="12">12 sessions</option>
+              <option value="16">16 sessions</option>
+              <option value="20">20 sessions</option>
+            </select>
+          </div>
+          <div class="field"><div class="fl">Price (RM)</div><input class="fi" id="nPrice" type="number" placeholder="1440"></div>
+          <div class="field"><div class="fl">Primary goal</div><input class="fi" id="nGoal" placeholder="e.g. Build strength, lose fat"></div>
+          <div class="field"><div class="fl">Status</div>
+            <select class="fi" id="nStatus">
+              <option value="active">Active</option>
+              <option value="away">Away / travelling</option>
+              <option value="new">New / potential</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:16px;">
+          <div class="fl">Notes (injuries, background, constraints)</div>
+          <textarea class="fi ta" id="nNotes" placeholder="e.g. Lower back issue, former runner, wants to focus on mobility first"></textarea>
+        </div>
+        <button class="btn btn-navy btn-full" onclick="addClient()">Add client</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- DAY EDITOR MODAL -->
+<div class="modal-overlay" id="dayModal" onclick="closeDayModal(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Edit session</div>
+      <button class="modal-close" onclick="closeDayModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field">
+          <div class="fl">Session focus</div>
+          <select class="fi" id="mFocus">
+            <option value="">Rest day</option>
+            <option>Upper Body</option>
+            <option>Lower Body</option>
+            <option>Full Body</option>
+            <option>Push</option>
+            <option>Pull</option>
+            <option>Legs</option>
+            <option>Push / Pull</option>
+            <option>Upper A</option>
+            <option>Upper B</option>
+            <option>Lower A</option>
+            <option>Lower B</option>
+            <option>Cardio</option>
+            <option>Mobility</option>
+            <option>Custom</option>
+          </select>
+        </div>
+        <div class="field">
+          <div class="fl">Custom label (optional)</div>
+          <input class="fi" id="mCustom" placeholder="e.g. Upper A — Hypertrophy">
+        </div>
+      </div>
+      <div class="fl" style="margin-bottom:8px;">Exercises</div>
+      <div id="mExList"></div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+        <input class="fi" id="mExName" placeholder="Exercise name" style="flex:2;min-width:120px;" onkeydown="if(event.key==='Enter')addModalEx()">
+        <input class="fi" id="mExSets" placeholder="e.g. 4×8" style="flex:1;min-width:80px;" onkeydown="if(event.key==='Enter')addModalEx()">
+        <button class="btn btn-green" onclick="addModalEx()">+ Add</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeDayModal()">Cancel</button>
+      <button class="btn btn-navy" onclick="saveModalDay()">Save day</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
